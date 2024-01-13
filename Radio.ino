@@ -1,32 +1,49 @@
+const byte address[6] = "00001";
+int16_t received[3];
+int16_t x_value, y_value, btn_state;
+
 /**
- * @brief Inisialisasi NRF sebagai transmitter
+ * @brief Inisialisasi NRF sebagai receiver
  * 
  */
 void initializeRadio() {
   radio.begin();
-  radio.openWritingPipe(address);
+  radio.openReadingPipe(0, address);
   radio.setPALevel(RF24_PA_HIGH);
-  radio.stopListening();
+  radio.startListening();
 }
 
 /**
- * @brief Mengambil data dari input joystick dan button lalu mengirimkan data melalui NRF
+ * @brief Menerima data dari transmitter remote-tx dan mengirimkan kembali melalu serial
  * 
  */
-void getSendData() {
-  x_value = analogRead(X_AXIS);
-  y_value = analogRead(Y_AXIS);
-  btn_state = digitalRead(BUTTON);
+void receivingData() {
+  if (radio.available()) {
+    radio.read(&received, sizeof(received));
+    x_value = received[0];
+    y_value = received[1];
+    btn_state = received[2];
 
-  payload[0] = x_value;
-  payload[1] = y_value;
-  payload[2] = btn_state;
-
-  radio.write(&payload, sizeof(payload));
+    sendDataViaSS();
+  }
 }
 
 /**
- * @brief Digunakan untuk melihat data yang terkirim melalu serial monitor
+ * @brief Konfigurasi pengiriman data via serial
+ * 
+ */
+void sendDataViaSS() {
+  nanoSerial.print(x_value);
+  nanoSerial.print("A");
+  nanoSerial.print(y_value);
+  nanoSerial.print("B");
+  nanoSerial.print(btn_state);
+  nanoSerial.print("C");
+  nanoSerial.print("\n");
+}
+
+/**
+ * @brief Digunakan untuk melihat data yang diterima melalu serial monitor
  * 
  */
 void debugData() {
