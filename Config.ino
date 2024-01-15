@@ -1,4 +1,4 @@
-// STORAGE DATA SERIAL FROM REMOTE
+// STORAGE DATA SERIAL FROM REMOTE / SCREEN
 char c;
 String data_in, x_str = "", y_str = "", btn_str = "";
 int8_t index_a, index_b, index_c;
