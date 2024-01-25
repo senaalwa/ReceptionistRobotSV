@@ -3,11 +3,11 @@ char c;
 String data_in, x_str = "", y_str = "", btn_str = "";
 int8_t index_a, index_b, index_c;
 
-// ACTUAL DATA TO USE
+// DATA AKTUAL YANG AKAN DIPAKAI DARI JOYSTICK
 int16_t x_value, y_value, btn_state;
 int16_t speed = 30;
 
-// SERVO CONNECTION
+// KONEKSI PIN SERVO DAN SET NILAI TENGAH SERVO
 const int8_t SERVO_PIN = 46;
 int16_t pos = 90;
 
