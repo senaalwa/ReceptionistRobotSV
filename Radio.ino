@@ -21,14 +21,36 @@ void getSendData() {
   x_value = analogRead(X_AXIS);
   y_value = analogRead(Y_AXIS);
   btn_state = digitalRead(BUTTON);
+  switchBtnValue();
 
   // packing data
   payload[0] = x_value;
   payload[1] = y_value;
   payload[2] = btn_state;
+  payload[3] = value_mode;
 
   // pengiriman data
   radio.write(&payload, sizeof(payload));
+}
+
+/**
+ * @brief Merubah value_mode dari button switch dengan 3 pilihan
+ * 
+ */
+void switchBtnValue() {
+  bool switch_pressed = digitalRead(SWITCH);
+
+  // Jika button ditekan
+  if (switch_pressed) {
+    // Jika value bukan 3 maka increment 1
+    if (value_mode != 3) {
+      value_mode += 1;
+    // Jika 3 kembalikan ke 1
+    } else {
+      value_mode = 1;
+    }
+    delay(250);
+  }
 }
 
 /**
