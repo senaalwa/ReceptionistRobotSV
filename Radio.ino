@@ -10,6 +10,7 @@ void initializeRadio() {
   radio.begin();
   radio.openReadingPipe(0, address);
   radio.setPALevel(RF24_PA_HIGH);
+  // Set modul sebagai receiver
   radio.startListening();
 }
 
@@ -18,12 +19,14 @@ void initializeRadio() {
  * 
  */
 void receivingData() {
+  // Cek ketersediaan data
   if (radio.available()) {
+    // Baca dan simpan data yg diterima
     radio.read(&received, sizeof(received));
     x_value = received[0];
     y_value = received[1];
     btn_state = received[2];
-
+    // Mengirim data ke arduino nano via software serial
     sendDataViaSS();
   }
 }
